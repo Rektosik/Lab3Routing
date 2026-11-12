@@ -1,33 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using ProductsWithRouting.Models;
-using System.Diagnostics;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProductsWithRouting.Services;
 
 namespace ProductsWithRouting.Controllers
 {
+    [Route("users")]
     public class UsersController : Controller
     {
-        private List<User> myUsers;
-
-        public UsersController(Data data)
+        [HttpPost("index")]
+        public IActionResult Index([FromForm] string secretKey)
         {
-            myUsers = data.Users;
+            if (secretKey != "df2323eoT")
+            {
+                return Unauthorized();
+            }
+
+            return View(Data.Users);
         }
 
-        public IActionResult Index(string id)
+        [HttpGet("index")]
+        public IActionResult IndexGet()
         {
-            return View(myUsers);
+            return Unauthorized();
         }
-
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
     }
 }
